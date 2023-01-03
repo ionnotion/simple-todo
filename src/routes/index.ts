@@ -1,13 +1,17 @@
 import { Router, Request, Response } from "express";
 import { router as todoRouter } from "./todos";
 import { router as userRouter } from "./users";
+import { authentication } from "../middlewares/authentication";
 const router = Router();
 
 router.get("/", (req: Request, res: Response) => {
-	res.send("this is a express + typescript server");
+	res.send("this is an express + typescript server");
 });
 
-router.use("/todo", todoRouter);
 router.use("/user", userRouter);
+
+router.use(authentication)
+
+router.use("/todo", todoRouter);
 
 export default router;

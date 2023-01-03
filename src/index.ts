@@ -18,8 +18,7 @@ async function main() {
 		await connectToDatabase();
         app.use(router);
 		app.listen(port, () => {
-            console.log(process.env.SECRET)
-			console.log(`Typescript Server listening on port: ${port}`);
+			console.log(`Express + Typescript server listening on port: ${port}! 🚀`);
 		});
 	} catch (error) {
 		console.log(error);

@@ -11,6 +11,9 @@ export default class UsersController {
 			req.body.password = hashPassword(req.body.password);
 
 			const newUser = req.body as User;
+
+            console.log(newUser)
+            
 			const registration = await collections.users?.insertOne(newUser);
 
 			registration
@@ -28,8 +31,6 @@ export default class UsersController {
 	static async login(req: Request, res: Response) {
 		try {
 			const { credential, password } = req.body;
-
-			const test = ["username", "email", "phoneNumber"];
 
 			let foundUser = await collections.users?.findOne({
 				$or: [
