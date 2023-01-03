@@ -3,6 +3,13 @@ import TodosController from "../controllers/todosController";
 
 export const router = Router();
 
-router.get("/", (req: Request, res: Response) => {
-	res.send("this is todos");
-});
+router.get("/",TodosController.get)
+router.get("/:id",TodosController.getOne)
+
+router.post("/",TodosController.post)
+
+router.put("/:id",TodosController.put)
+
+router.patch("/:id",TodosController.patch)
+
+router.delete("/:id",TodosController.delete)
