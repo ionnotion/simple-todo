@@ -8,9 +8,12 @@ export default class TodosController {
 		try {
 			const { _id: user_id } = getUser();
 
-			let todos = (await collections.todos
-				?.find({ user_id: new ObjectId(user_id) })
-				.toArray()) as Todo[];
+			// console.log(user_id);
+
+			let todos = await collections.todos
+				?.find({user_id : new ObjectId(user_id)}).toArray() as Todo[];
+
+			// console.log(todos);
 
 			res.status(200).json(todos);
 		} catch (error) {
@@ -42,11 +45,13 @@ export default class TodosController {
 		try {
 			const { _id } = req.params;
 
-			let todo = await collections.todos?.findOne({ _id: new ObjectId(_id) }) as Todo
+			let todo = (await collections.todos?.findOne({
+				_id: new ObjectId(_id),
+			})) as Todo;
 
-            if(!todo) {
-                return res.status(404).json({message:"Data not Found"})
-            }
+			if (!todo) {
+				return res.status(404).json({ message: "Data not Found" });
+			}
 
 			res.status(200).json(todo);
 		} catch (error) {
@@ -54,9 +59,47 @@ export default class TodosController {
 		}
 	}
 
-	static async put(req: Request, res: Response) {}
+	static async put(req: Request, res: Response) {
+		try {
+			const { id : _id } = req.params;
+			const payload = { ...req.body } as Todo;
+			const updatedTodo = await collections.todos?.updateOne(
+				{ _id: new ObjectId(_id) },
+				{$set: {...payload}}
+			);
 
-	static async patch(req: Request, res: Response) {}
+			res.status(200).json(updatedTodo);
+		} catch (error) {
+			res.status(500).json({ message: "Internal Server Error" });
+		}
+	}
 
-	static async delete(req: Request, res: Response) {}
+	static async patch(req: Request, res: Response) {
+		try {
+			const { id : _id } = req.params;
+
+			console.log(_id)
+
+			const status =
+				req.body.status.toLowerCase() === "completed" ? true : false;
+
+			console.log(status)
+			const updatedTodo = await collections.todos?.updateOne(
+				{ _id: new ObjectId(_id) },
+				{ $set : {status} }
+			);
+
+
+			res.status(200).json(updatedTodo);
+		} catch (error) {
+			console.log(error)
+			res.status(500).json({ message: "Internal Server Error" });
+		}
+	}
+
+	static async delete(req: Request, res: Response) {
+		try {
+			const { _id } = req.params;
+		} catch (error) {}
+	}
 }
