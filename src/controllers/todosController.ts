@@ -70,6 +70,7 @@ export default class TodosController {
 
 			res.status(200).json(updatedTodo);
 		} catch (error) {
+			// console.log(error)
 			res.status(500).json({ message: "Internal Server Error" });
 		}
 	}
@@ -92,14 +93,21 @@ export default class TodosController {
 
 			res.status(200).json(updatedTodo);
 		} catch (error) {
-			console.log(error)
+			// console.log(error)
 			res.status(500).json({ message: "Internal Server Error" });
 		}
 	}
 
 	static async delete(req: Request, res: Response) {
 		try {
-			const { _id } = req.params;
-		} catch (error) {}
+			const { id:_id } = req.params;
+
+			const deletedTodo =  await collections.todos?.deleteOne({_id: new ObjectId(_id)})
+
+			res.status(200).json(deletedTodo)
+		} catch (error) {
+			// console.log(error)
+			res.status(500).json({ message: "Internal Server Error" });
+		}
 	}
 }
