@@ -8,12 +8,8 @@ export default class TodosController {
 		try {
 			const { _id: user_id } = getUser();
 
-			// console.log(user_id);
-
 			let todos = await collections.todos
 				?.find({user_id : new ObjectId(user_id)}).toArray() as Todo[];
-
-			// console.log(todos);
 
 			res.status(200).json(todos);
 		} catch (error) {
@@ -70,7 +66,6 @@ export default class TodosController {
 
 			res.status(200).json(updatedTodo);
 		} catch (error) {
-			// console.log(error)
 			res.status(500).json({ message: "Internal Server Error" });
 		}
 	}
@@ -93,7 +88,6 @@ export default class TodosController {
 
 			res.status(200).json(updatedTodo);
 		} catch (error) {
-			// console.log(error)
 			res.status(500).json({ message: "Internal Server Error" });
 		}
 	}
@@ -106,7 +100,6 @@ export default class TodosController {
 
 			res.status(200).json(deletedTodo)
 		} catch (error) {
-			// console.log(error)
 			res.status(500).json({ message: "Internal Server Error" });
 		}
 	}
